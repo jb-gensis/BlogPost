@@ -1,6 +1,12 @@
 # BlogPost
 
-# Setting up Dockerize Laravel
+# Setting up Dockerize
+```
+     Using :
+    * Docker for mysql, nginx, php, redis
+    * Laravel 8 and Vue
+    * Laravel Sanctum for authentication
+```
 
 > Setting up laravel for empty project
 
