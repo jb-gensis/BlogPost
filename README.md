@@ -25,7 +25,7 @@ $ composer install
 $ npm install && npm run dev
 
 # Migrate db and seed 
-$ php artisan migrate --seed
+$ php artisan migrate:fresh --seed
 
 # Then run artisan serve
 $ php artisan serve
