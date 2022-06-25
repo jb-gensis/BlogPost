@@ -22,7 +22,7 @@ $ cd src/
 # src/ (inside the directory) composer & npm install for first use
 $ cp src/.env.example src/.env
 $ composer install
-$ npm install && npm run dev
+$ npm install
 
 # Migrate db and seed 
 $ php artisan migrate:fresh --seed
