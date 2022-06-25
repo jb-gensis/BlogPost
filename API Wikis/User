@@ -1,0 +1,57 @@
+USER API ENDPOINTS
+
+[USER LOGIN]
+URL: http://localhost:8000/api/login
+METHOD: POST
+
+PARAMS : 
+{
+    "email":"user1@gmail.com",
+    "password":"password"
+}
+
+RESPONSE : 
+{
+    "success": true,
+    "data": {
+        "token": "12|emqzaSdRKpmp8G93YciMzUVC5PKKFDqGxzcKPIwm",
+        "id": 1,
+        "name": "User 1",
+        "email": "user1@gmail.com"
+    },
+    "message": "User signed in"
+}
+
+[USER REGISTER]
+URL: http://localhost:8000/api/register
+METHOD: POST
+PARAMS : 
+{
+    "name": "User 1",
+    "email": "user1@gmail.com",
+    "password":"password",
+    "confirm_password":"password"
+}
+
+RESPONSE : 
+{
+    "success": true,
+    "data": {
+        "token": "13|Qm8OQ6hIwrjhAZ2uQQn461Dc391Dw7aODepktn55",
+        "id": 1,
+        "name": "User 1",
+        "email": "user1@gmail.com"
+    },
+    "message": "User created successfully."
+}
+
+[USER LOGOUT]
+URL: http://localhost:8000/api/logout
+METHOD: POST
+HEADERS: Authorization : Bearer <token>
+RESPONSE:
+{
+    "success": true,
+    "data": null,
+    "message": "User Logged Out"
+}

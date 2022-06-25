@@ -1,0 +1,174 @@
+BLOG API ENDPOINTS
+
+[BLOG ShowAllPost]
+URL: http://localhost:8000/api/blogs
+METHOD: GET
+HEADERS: Authorization : Bearer <token>
+RESPONSE:
+{
+    "success": true,
+    "data": [
+        {
+            "id": 10,
+            "user_id": 3,
+            "title": "User Update of my Life Dolorinh",
+            "description": "Lorem Dolor Ipsum Exportanis Seninggwilas Espada loriata",
+            "created_at": "06/25/2022",
+            "updated_at": "06/25/2022",
+            "user_name": "User 3"
+        },
+        {
+            "id": 9,
+            "user_id": 4,
+            "title": "Wassup",
+            "description": "Lorem Dolor Ipsum Motyakens",
+            "created_at": "06/25/2022",
+            "updated_at": "06/25/2022",
+            "user_name": "John"
+        },
+        {
+            "id": 7,
+            "user_id": 1,
+            "title": "Updated Post",
+            "description": "Sometimes we have no relationship between two models and we have no foreign key to relate two models.",
+            "created_at": "06/25/2022",
+            "updated_at": "06/25/2022",
+            "user_name": "User 1"
+        },
+        {
+            "id": 2,
+            "user_id": 1,
+            "title": "Title 2 : Writing",
+            "description": "Laravel includes the ability to update the seed your database with data using seed classes. All seed classes are stored in the database/seeders directory.",
+            "created_at": "06/25/2022",
+            "updated_at": "06/25/2022",
+            "user_name": "User 1"
+        },
+        {
+            "id": 4,
+            "user_id": 2,
+            "title": "Title 1-1",
+            "description": "Some seeding operations may cause you to alter or lose data. In order to protect you from running seeding commands against your production database, you will be prompted for confirmation before the seeders are executed in the production environment. ",
+            "created_at": "06/25/2022",
+            "updated_at": "06/25/2022",
+            "user_name": "User 2"
+        },
+        {
+            "id": 5,
+            "user_id": 2,
+            "title": "Title 1-2",
+            "description": "Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe.",
+            "created_at": "06/25/2022",
+            "updated_at": "06/25/2022",
+            "user_name": "User 2"
+        }
+    ],
+    "message": "Posts fetched."
+}
+
+[BLOG ShowPostByID]
+URL: http://localhost:8000/api/blogs/{id}
+METHOD: GET
+HEADERS: Authorization : Bearer <token>
+RESPONSE:
+{
+    "success": true,
+    "data": {
+        "id": 2,
+        "user_id": 1,
+        "title": "Title 2 : Writing",
+        "description": "Laravel includes the ability to update the seed your database with data using seed classes. All seed classes are stored in the database/seeders directory.",
+        "created_at": "06/25/2022",
+        "updated_at": "06/25/2022"
+    },
+    "message": "Post fetched."
+}
+
+[BLOG ShowAllPostByUser] // Base on Auth ID user
+URL: http://localhost:8000/api/user-posts
+METHOD: GET
+HEADERS: Authorization : Bearer <token>
+RESPONSE:
+{
+    "success": true,
+    "data": [
+        {
+            "id": 7,
+            "user_id": 1,
+            "title": "Updated Post",
+            "description": "Sometimes we have no relationship between two models and we have no foreign key to relate two models.",
+            "created_at": "06/25/2022",
+            "updated_at": "06/25/2022",
+            "user_name": "User 1"
+        },
+        {
+            "id": 2,
+            "user_id": 1,
+            "title": "Title 2 : Writing",
+            "description": "Laravel includes the ability to update the seed your database with data using seed classes. All seed classes are stored in the database/seeders directory.",
+            "created_at": "06/25/2022",
+            "updated_at": "06/25/2022",
+            "user_name": "User 1"
+        }
+    ],
+    "message": "Post fetched."
+}
+
+[BLOG Create Post] // Base on Auth ID user
+URL: http://localhost:8000/api/blogs
+METHOD: POST
+HEADERS: Authorization : Bearer <token>
+PARAMS: 
+{
+    "title":"Laravel : Log",
+    "description":"Tthe logger provides the eight logging levels. would like to know how I can make the delete button correctly send the id by parameter to the controller, that it receives it and then removes the comment."
+}
+RESPONSE: 
+{
+    "success": true,
+    "data": {
+        "id": 11,
+        "user_id": 1,
+        "title": "Laravel : Log",
+        "description": "Tthe logger provides the eight logging levels. would like to know how I can make the delete button correctly send the id by parameter to the controller, that it receives it and then removes the comment.",
+        "created_at": "06/25/2022",
+        "updated_at": "06/25/2022"
+    },
+    "message": "Post created."
+}
+
+
+[BLOG UPDATE] // Base on Auth ID user, adding parameter blog_id to update
+URL: http://localhost:8000/api/blogs/{id}
+METHOD: PUT
+HEADERS: Authorization : Bearer <token>
+PARAMS: 
+{
+    "title": "Lara 2 : Writing",
+    "description": "Laravel includes the ability to update the seed your database with data using seed classes. All seed classes are stored in the database/seeders directory."
+}
+
+RESPONSE:
+{
+    "success": true,
+    "data": {
+        "id": 11,
+        "user_id": 1,
+        "title": "Lara 2 : Writing",
+        "description": "Laravel includes the ability to update the seed your database with data using seed classes. All seed classes are stored in the database/seeders directory.",
+        "created_at": "06/25/2022",
+        "updated_at": "06/25/2022"
+    },
+    "message": "Post updated."
+}
+
+[BLOG DELETE] // Base on Auth ID user, adding parameter blog_id to delete
+URL: http://localhost:8000/api/blogs/{id}
+METHOD: PUT
+HEADERS: Authorization : Bearer <token>
+RESPONSE: 
+{
+    "success": true,
+    "data": [],
+    "message": "Post deleted."
+}
