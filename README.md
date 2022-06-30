@@ -22,11 +22,13 @@ $ cd BlogPost
 # run docker for initializing and running project
 $ docker-compose up --build
 
+# Copy .env file
+$ cp src/.env.example src/.env
+
 # goto src directory 
 $ cd src/
 
 # src/ (inside the directory) composer & npm install for first use
-$ cp src/.env.example src/.env
 $ composer install
 $ npm install
 
