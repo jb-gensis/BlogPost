@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\API\BaseController as BaseController;
-use App\Models\Blog;
+use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\Blog as BlogResource;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Services\Interfaces\BlogServiceInterface;
 use Illuminate\Support\Facades\Auth;
 
 class CustomBlogController extends BaseController
 {
+    public function __construct(
+        protected BlogServiceInterface $blogService
+    ) {}
+
     public function showAllBlogAuth()
     {
-        $blogs = Blog::where('user_id', Auth::id())
-                    ->join('users', 'users.id','=','blogs.user_id')
-                    ->orderBy('updated_at','desc')->get(['blogs.*','users.name']);
+        $blogs = $this->blogService->getAuthUserBlogs(Auth::user()->id);
 
-        return $this->sendResponse(BlogResource::collection($blogs), 'Post fetched.');
+        return $this->sendResponse(
+            BlogResource::collection($blogs),
+            'Post fetched.'
+        );
     }
 }
