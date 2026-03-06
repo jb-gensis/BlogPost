@@ -2,85 +2,79 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\API\BaseController as BaseController;
+use App\DTOs\BlogDTO;
 use App\Models\Blog;
 use App\Http\Resources\Blog as BlogResource;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
+use App\Http\Requests\StoreBlogRequest;
+use App\Http\Requests\UpdateBlogRequest;
+use App\Services\Interfaces\BlogServiceInterface;
+use App\Http\Controllers\API\BaseController;
 use Illuminate\Support\Facades\Auth;
 
 class BlogController extends BaseController
 {
+    public function __construct(
+        protected BlogServiceInterface $blogService
+    ) {}
+
     public function index()
     {
-        $blogs = Blog::join('users', 'users.id','=','blogs.user_id')
-                    ->orderBy('updated_at','desc')->get(['blogs.*','users.name']);
-                    
-        return $this->sendResponse(BlogResource::collection($blogs), 'Posts fetched.');
+        $blogs = $this->blogService->getAllBlogs();
+
+        return $this->sendResponse(
+            BlogResource::collection($blogs),
+            'Posts fetched.'
+        );
     }
-    
-    public function store(Request $request)
+
+    public function store(StoreBlogRequest $request)
     {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'title' => 'required',
-            'description' => 'required'
-        ]);
+        $data = $request->validated();
+        $data['user_id'] = Auth::user()->id;
 
-        if($validator->fails()){
-            return $this->sendError($validator->errors());       
-        }
+        $dto = BlogDTO::fromArray($data);
 
-        $input['user_id'] = Auth::id();
-        $blog = Blog::create($input);
+        $blog = $this->blogService->createBlog($dto);
 
-        return $this->sendResponse(new BlogResource($blog), 'Post created.');
+        return $this->sendResponse(
+            new BlogResource($blog),
+            'Post created.'
+        );
     }
-   
+
     public function show($id)
     {
-        $blog = Blog::find($id);
+        $blog = $this->blogService->getBlog($id);
 
-        if (is_null($blog)) {
-            return $this->sendError('Post does not exist..');
+        if (!$blog) {
+            return $this->sendError('Post does not exist.');
         }
 
-        return $this->sendResponse(new BlogResource($blog), 'Post fetched.');
+        return $this->sendResponse(
+            new BlogResource($blog),
+            'Post fetched.'
+        );
     }
- 
-    public function update(Request $request, Blog $blog)
+
+    public function update(UpdateBlogRequest $request, Blog $blog)
     {
-        $input = $request->all();
+        $data = $request->validated();
+        $data['user_id'] = $blog->user_id;
 
-        $validator = Validator::make($input, [
-            'title' => 'required',
-            'description' => 'required'
-        ]);
+        $dto = BlogDTO::fromArray($data);
 
-        if($validator->fails()){
-            return $this->sendError($validator->errors());       
-        }
+        $blog = $this->blogService->updateBlog($blog,$dto);
 
-        if ($blog->user_id == Auth::id()) {
-            $blog->title = $input['title'];
-            $blog->description = $input['description'];
-            $blog->save();
-
-            return $this->sendResponse(new BlogResource($blog), 'Post updated.');
-        }
-        
-        return $this->sendError('Unauthorized', 'Unauthorized to update blog post', 401); 
+        return $this->sendResponse(
+            new BlogResource($blog),
+            'Post updated.'
+        );
     }
-   
+
     public function destroy(Blog $blog)
     {
-        if ($blog->user_id == Auth::id()) {
-            $blog->delete();
-            return $this->sendResponse([], 'Post deleted.');
-        }
+        $this->blogService->deleteBlog($blog);
 
-        return $this->sendError('Unauthorized', 'Unauthorized to delete blog post', 401);
+        return $this->sendResponse([], 'Post deleted.');
     }
-
 }

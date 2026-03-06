@@ -21,3 +21,7 @@ src/npm-debug.log
 src/yarn-error.log
 src/.idea
 src/.vscode
+src/package.json
+src/package-lock.json
+src/composer.json
+src/composer-lock.json
